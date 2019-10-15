@@ -1,16 +1,16 @@
 parameters:
  masters: 1
- workers: 0
- domain: karmalabs.com
+ workers: 1
+ domain: knieco.local
  pool: default
  network: default
- prefix: ku
+ prefix: kni
  deploy_app: false
  nfs: true
  sdn: flannel
- multus: false
- master_memory: 6144
- node_memory: 4096
+ multus: true
+ master_memory: 16384
+ node_memory: 16384
  template: CentOS-7-x86_64-GenericCloud.qcow2
  notifycmd: "kubectl get pod --all-namespaces"
 
@@ -36,7 +36,7 @@ CentOS-7-x86_64-GenericCloud.qcow2:
 {% for number in range(0, masters) %}
 {{prefix}}-master-0{{ number }}:
  template: {{ template }}
- numcpus: 2
+ numcpus: 4
  memory: {{ master_memory }}
  reservedns: true
  sharedkey: true
@@ -48,7 +48,7 @@ CentOS-7-x86_64-GenericCloud.qcow2:
  nets:
   - {{ network }}
  disks:
-  - size: 50
+  - size: 30
  pool: {{ pool }}
  files:
 {% if type == 'ovirt' %}
@@ -88,7 +88,7 @@ CentOS-7-x86_64-GenericCloud.qcow2:
 {% for number in range(0, workers) %}
 {{prefix }}-worker-0{{ number }}:
  template: {{ template }}
- numcpus: 2
+ numcpus: 4
  memory: {{ node_memory }}
  reservedns: true
  sharedkey: true
@@ -96,7 +96,7 @@ CentOS-7-x86_64-GenericCloud.qcow2:
  nets:
   - {{ network }}
  disks:
-  - size: 50
+  - size: 30
  pool: {{ pool }}
  files:
   - path: /etc/yum.repos.d/kubernetes.repo
