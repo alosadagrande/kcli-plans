@@ -4,7 +4,7 @@ CIDR="192.168.0.0/16"
 CIDR="10.244.0.0/16"
 {% endif %} 
 {% if masters > 1 %}
-kubeadm init --control-plane-endpoint "{{ prefix }}-master.{{ network }}:6443" --pod-network-cidr $CIDR --upload-certs
+kubeadm init --control-plane-endpoint "{{ prefix }}-master:6443" --pod-network-cidr $CIDR --upload-certs
 {% else %}
 kubeadm init --pod-network-cidr $CIDR
 {% endif %}

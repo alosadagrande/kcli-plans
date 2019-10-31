@@ -9,10 +9,14 @@ parameters:
  nfs: true
  sdn: flannel
  multus: true
- master_memory: 16384
- node_memory: 16384
+ master_memory: 6144
+ master_cpu: 2
+ node_memory: 4096
+ node_cpu: 2
  template: CentOS-7-x86_64-GenericCloud.qcow2
  notifycmd: "kubectl get pod --all-namespaces"
+ cmds:
+  - echo "{{ password | default('toor') }}" | passwd --stdin root
 
 {% if template == 'CentOS-7-x86_64-GenericCloud.qcow2' %}
 CentOS-7-x86_64-GenericCloud.qcow2:
@@ -22,6 +26,8 @@ CentOS-7-x86_64-GenericCloud.qcow2:
 
 {% if masters > 1 %}
 {{ prefix }}-master:
+ domain: {{ domain }}
+ reservedns: true
  type: loadbalancer
  nets:
  - name: {{ network }}
@@ -36,7 +42,7 @@ CentOS-7-x86_64-GenericCloud.qcow2:
 {% for number in range(0, masters) %}
 {{prefix}}-master-0{{ number }}:
  template: {{ template }}
- numcpus: 4
+ numcpus: {{ master_cpu }}
  memory: {{ master_memory }}
  reservedns: true
  sharedkey: true
@@ -88,7 +94,7 @@ CentOS-7-x86_64-GenericCloud.qcow2:
 {% for number in range(0, workers) %}
 {{prefix }}-worker-0{{ number }}:
  template: {{ template }}
- numcpus: 4
+ numcpus: {{ node_cpu }} 
  memory: {{ node_memory }}
  reservedns: true
  sharedkey: true
