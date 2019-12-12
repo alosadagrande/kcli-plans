@@ -234,17 +234,23 @@
   description: Downstream manageiq cfme-rhos-5.7.1.3-1 with additional provider scripts
   numvms: 1
 
+- name: openshift4_crc
+  file: openshift4/crc/kcli_plan.yml
+  description: Openshift4 based on crc
+  numvms: 1
+  comments: crc vm is run within vm
+
+- name: openshift4_baremetal
+  file: openshift4/baremetal/kcli_plan.yml
+  description: Openshift4 Baremetal deployment
+  numvms: 1
+  comments: openshift baremetal installer to be used with an existing install-config.yaml. Can optionally compile the installer against a set of PRS
+
 - name: openshift_origin
   file: openshift3/origin.yml
   description: Upstream Openshift based on oc cluster up with istio, knative and asb
   numvms: 1
   comments: openshift_version can also be set to to an older one and asb enabled
-
-- name: openshift4_installer
-  file: openshift3/installer.yml
-  description: Upstream Compilation of openshift new installer
-  numvms: 1
-  comments: you ll need to download rhcos-qemu.qcow2 from somewhere 
 
 - name: ocp3
   file: openshift3/downstream.yml
@@ -385,3 +391,8 @@
   file: ceph/upstream.yml
   description: ceph cluster on 3 vms
   numvms: 3
+
+- name: golang
+  file: development/golang.yml
+  description: golang dev box
+  numvms: 1
