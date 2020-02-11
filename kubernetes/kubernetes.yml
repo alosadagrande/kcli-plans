@@ -1,18 +1,18 @@
 parameters:
  masters: 1
  workers: 1
- domain: knieco.local
+ domain: kubevirt.local
  pool: default
  network: default
- prefix: kni
+ prefix: blog
  deploy_app: false
  nfs: true
  sdn: flannel
  multus: true
- master_memory: 6144
- master_cpu: 2
- node_memory: 4096
- node_cpu: 2
+ master_memory: 16384
+ master_cpu: 4
+ node_memory: 8192
+ node_cpu: 4
  template: CentOS-7-x86_64-GenericCloud.qcow2
  notifycmd: "kubectl get pod --all-namespaces"
  cmds:
